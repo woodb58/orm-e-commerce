@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { Tag, Product, ProductTag, Category } = require("../../models");
+const { Tag, Product, ProductTag } = require("../../models");
 
 // The `/api/tags` endpoint
 
@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
 
 router.get("/:id", (req, res) => {
   // find a single tag by its `id`
-  Tag.findOne({ include: [{ model: Product, through: ProductTag }] })
+  Tag.findOne({ include: [{ model: Product, through: ProductTag }], where: {id: req.params.id} })
     .then((response) => res.status(200).json(response))
     .catch((err) => res.status(400).json(err));
 });
@@ -33,7 +33,7 @@ router.put("/:id", (req, res) => {
 
 router.delete("/:id", (req, res) => {
   // delete on tag by its `id` value
-  Tag.destroy({ where: { id: req.paramas.id } })
+  Tag.destroy({ where: { id: req.params.id } })
     .then((response) => res.status(200).json(response))
     .catch((err) => res.status(400).json(err));
 });
